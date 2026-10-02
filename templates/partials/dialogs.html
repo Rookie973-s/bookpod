@@ -1,0 +1,29 @@
+<!-- Sign in / Sign up (Google) -->
+<dialog class="modal" id="authModal" aria-labelledby="authTitle">
+  <button class="modal-x" type="button" data-close aria-label="Close">×</button>
+  <h2 class="serif" id="authTitle">Sign in to BookPod</h2>
+  <p class="modal-sub">Use your Google account to sign in or create an account. Your shelf and reading progress follow you across devices.</p>
+  <div id="googleBtnHolder" class="google-holder"></div>
+  <p class="modal-msg" id="authMsg" role="status" aria-live="polite"></p>
+  <p class="modal-fine">We only receive your name, email address and profile picture from Google. We never see your password.</p>
+</dialog>
+
+<!-- Update reading progress -->
+<dialog class="modal" id="progressModal" aria-labelledby="progTitle">
+  <button class="modal-x" type="button" data-close aria-label="Close">×</button>
+  <h2 class="serif" id="progTitle">Update progress</h2>
+  <p class="modal-sub" id="progBook"></p>
+  <div class="prog-big"><span id="progPct">0%</span><div class="bar"><i id="progBar"></i></div></div>
+  <label class="field-label" for="progRange">Current page</label>
+  <input type="range" id="progRange" min="0" max="100" value="0" aria-label="Current page slider">
+  <div class="prog-row">
+    <input type="number" id="progPage" min="0" inputmode="numeric" aria-label="Current page number">
+    <span id="progTotal"></span>
+  </div>
+  <p class="modal-msg" id="progMsg" role="status" aria-live="polite"></p>
+  <div class="modal-actions">
+    <button class="btn btn-primary" type="button" id="progSave">Save progress</button>
+    <button class="btn btn-outline" type="button" id="progFinish">Mark as finished</button>
+  </div>
+  <button class="link-danger" type="button" id="progRemove">Remove from My Shelf</button>
+</dialog>

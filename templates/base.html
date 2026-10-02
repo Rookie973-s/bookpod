@@ -1,0 +1,36 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}BookPod — A Library for Ideas Worth Keeping{% endblock %}</title>
+<meta name="description" content="{% block description %}A personal digital publishing house and educational library.{% endblock %}">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#FAF6EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1224" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="{% static 'images/logo.png' %}" type="image/png">
+<!-- Apply the saved theme before first paint (UI preference only, not authentication). -->
+<script>(function(){var t=null;try{t=localStorage.getItem('bp-theme')}catch(e){}
+if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';
+document.documentElement.setAttribute('data-theme',t)})();</script>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% block head %}{% endblock %}
+</head>
+<body class="mobile-pad" data-nav="{% block nav_key %}{% endblock %}">
+
+{% include "partials/header.html" %}
+
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+{% include "partials/footer.html" %}
+{% include "partials/bottom_nav.html" %}
+{% include "partials/dialogs.html" %}
+
+<script src="{% static 'js/core.js' %}"></script>
+<script src="{% static 'js/pages.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

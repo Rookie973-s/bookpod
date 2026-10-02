@@ -1,0 +1,41 @@
+{% load static %}
+<header class="site-header">
+  <div class="wrap header-row">
+    <a href="{% url 'catalog' %}" class="logo" aria-label="BookPod home">
+      <img class="word" src="{% static 'images/logo.png' %}" width="160" height="80" alt="BookPod — a place for different books/PDFs" loading="eager" decoding="async" fetchpriority="high">
+    </a>
+    <nav class="main" aria-label="Primary">
+      <a href="{% url 'catalog' %}" data-nav="home">Catalog</a>
+      <a href="{% url 'collections' %}" data-nav="collections">Collections</a>
+      <a href="{% url 'topics' %}" data-nav="topics">Topics</a>
+      <a href="{% url 'my-shelf' %}" data-nav="myshelf">My Shelf</a>
+    </nav>
+    <div class="head-actions">
+      <button class="icon-btn theme-btn" id="themeBtn" type="button" title="Switch theme" aria-label="Switch light / dark theme" onclick="BP.toggleTheme()">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+
+      <div class="auth-slot" id="authSlot">
+        <button class="btn btn-primary auth-btn" id="signInBtn" type="button">
+          <span>Sign in</span><span class="auth-extra"> / Sign up</span>
+        </button>
+        <div class="user-menu" id="userMenu" hidden>
+          <button class="avatar-btn" id="avatarBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Account menu"></button>
+          <div class="user-pop" id="userPop" hidden>
+            <p class="user-name" id="userName"></p>
+            <p class="user-mail" id="userMail"></p>
+            <a href="{% url 'my-shelf' %}">My Shelf</a>
+            <button type="button" id="signOutBtn">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="{% url 'catalog' %}" data-nav="home">Catalog</a>
+    <a href="{% url 'collections' %}" data-nav="collections">Collections</a>
+    <a href="{% url 'topics' %}" data-nav="topics">Topics</a>
+    <a href="{% url 'my-shelf' %}" data-nav="myshelf" style="border-bottom:none">My Shelf</a>
+  </div>
+</header>

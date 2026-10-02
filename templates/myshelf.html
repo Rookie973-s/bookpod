@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}My Books & Progress — BookPod{% endblock %}
+{% block nav_key %}myshelf{% endblock %}
+{% block content %}
+<div class="wrap page-pad">
+  <h1 class="serif page-title">My Books &amp; Progress</h1>
+  <p class="page-sub">What you're reading now, and everything you've finished.</p>
+
+  <div id="shelfGate" class="gate" hidden>
+    <div>
+      <h3 class="serif">Sign in to see your shelf</h3>
+      <p>Your books and reading progress are saved to your account.</p>
+    </div>
+    <button class="btn btn-primary" type="button" data-open-auth>Sign in / Sign up</button>
+  </div>
+
+  <div class="shelf-board" id="shelfBoard" aria-live="polite">
+    <section class="shelf-section" aria-labelledby="readingH">
+      <div class="shelf-head"><h2 class="serif" id="readingH">Currently reading</h2><span class="count" id="readingCount"></span></div>
+      <div class="shelf-grid reading" id="readingShelf"></div>
+    </section>
+    <section class="shelf-section" aria-labelledby="finishedH">
+      <div class="shelf-head"><h2 class="serif" id="finishedH">Finished</h2><span class="count" id="finishedCount"></span></div>
+      <div class="shelf-grid finished" id="finishedShelf"></div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script>Pages.shelf();</script>{% endblock %}

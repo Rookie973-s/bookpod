@@ -1,0 +1,18 @@
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <span class="word serif" style="font-size:1.2rem; color:#fff">BookPod</span>
+      <p class="foot-blurb">A personal digital publishing house and educational library.</p>
+    </div>
+    <div><h5>Browse</h5>
+      <ul>
+        <li><a href="{% url 'catalog' %}">Catalog</a></li>
+        <li><a href="{% url 'collections' %}">Collections</a></li>
+        <li><a href="{% url 'my-shelf' %}">My Shelf</a></li>
+      </ul>
+    </div>
+    <div><h5>Topics</h5><ul id="footCats"><li><a href="{% url 'topics' %}">All topics</a></li></ul></div>
+    <div><h5>About</h5><ul><li><a href="{% url 'catalog' %}">About BookPod</a></li></ul></div>
+  </div>
+  <div class="wrap bottom">© 2026 BookPod. All publications original. · BLUEWAVE</div>
+</footer>

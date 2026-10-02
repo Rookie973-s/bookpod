@@ -1,0 +1,14 @@
+Django>=6.0,<6.1
+djangorestframework>=3.16
+# MySQL driver: C-based on Windows (your PC), pure-Python on Linux (the hosting server)
+mysqlclient>=2.2; sys_platform == "win32"
+PyMySQL>=1.1; sys_platform != "win32"
+cryptography>=42; sys_platform != "win32"
+Pillow>=10.0
+google-auth>=2.30
+requests>=2.32
+python-dotenv>=1.0
+whitenoise>=6.7
+gunicorn>=22.0; sys_platform != "win32"
+# Uploaded covers/books in a cloud bucket (needed on free hosting)
+django-storages[s3]>=1.14

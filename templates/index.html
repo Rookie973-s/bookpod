@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block nav_key %}home{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-bg">
+    <img src="{% static 'images/hero.jpg' %}" alt="Illustration of a book with a lightbulb on the cover" loading="eager" decoding="async" fetchpriority="high">
+    <div class="hero-fade"></div>
+  </div>
+  <p class="hero-caption">Better books.<br>Bigger ideas.</p>
+  <div class="wrap hero-inner">
+    <div>
+      <h1 class="serif">A place for ideas<br>worth keeping.</h1>
+      <form class="search-pill" id="heroSearch" role="search" action="{% url 'topics' %}" method="get">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="navsearch" name="q" type="search" placeholder="Search books, authors, topics…" aria-label="Search books, authors, topics" autocomplete="off">
+        <a class="filter-btn" href="{% url 'topics' %}" aria-label="Browse all topics"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M8 12h8M11 18h2"/></svg></a>
+      </form>
+      <div class="tags-row" id="popularTags" aria-label="Popular topics"></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="block-section reveal">
+    <div class="section-head"><h2 class="serif">Curator's Volume of the Month</h2></div>
+    <div class="curator-card" id="curatorSlot"><div class="skeleton" style="height:260px;grid-column:1/-1"></div></div>
+  </section>
+
+  <section class="block-section">
+    <div class="section-head"><h2 class="serif">Explore by category</h2><a href="{% url 'topics' %}" class="link-more">View all →</a></div>
+    <div id="categoryGrid" class="grid g5"></div>
+  </section>
+
+  <section class="block-section">
+    <div class="section-head"><h2 class="serif">Latest in the catalog</h2><a href="{% url 'topics' %}" class="link-more">View all →</a></div>
+    <div id="latestGrid" class="grid g4"></div>
+  </section>
+
+  <section class="block-section">
+    <div class="section-head"><h2 class="serif">On Your Shelf</h2><a href="{% url 'my-shelf' %}" class="link-more">View all →</a></div>
+    <div id="shelfRow"></div>
+  </section>
+
+  <section class="block-section" style="padding-bottom:56px">
+    <div class="section-head"><h2 class="serif">Your library at a glance</h2></div>
+    <div id="statGrid" class="stat-grid"></div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}<script>Pages.home();</script>{% endblock %}

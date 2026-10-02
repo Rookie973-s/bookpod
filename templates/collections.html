@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Collections — BookPod{% endblock %}
+{% block nav_key %}collections{% endblock %}
+{% block content %}
+<div class="wrap page-pad">
+  <h1 class="serif page-title">Curated collections</h1>
+  <p class="page-sub">Guided paths through related publications.</p>
+  <div id="collectionList"><div class="skeleton" style="height:220px"></div></div>
+</div>
+{% endblock %}
+{% block scripts %}<script>Pages.collections();</script>{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Topics — BookPod{% endblock %}
+{% block nav_key %}topics{% endblock %}
+{% block content %}
+<div class="wrap page-pad" style="padding-bottom:10px">
+  <h1 class="serif page-title" id="topicsTitle">Topics</h1>
+  <p class="page-sub" id="topicsSub" style="margin-bottom:12px">Browse the library by subject.</p>
+</div>
+
+<div class="explore-sticky">
+  <div class="wrap">
+    <form class="search-pill" id="topicSearchForm" role="search" style="max-width:520px; margin-bottom:12px" onsubmit="return false">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="navsearch" type="search" placeholder="Search books, authors, topics…" aria-label="Search books, authors, topics" autocomplete="off">
+    </form>
+    <div id="chipRow" class="chip-row" role="tablist" aria-label="Filter by topic"></div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:30px; padding-bottom:40px">
+  <div id="topicsGrid" class="tile-grid"></div>
+  <p id="topicsEmpty" class="empty" hidden>No publications match yet — try another title, author or topic.</p>
+  <div class="grid-foot" id="topicsFoot" hidden>
+    <p class="foot-note" id="topicsNote"></p>
+    <button class="btn btn-outline" id="loadMore" type="button" hidden>Load more</button>
+    <p class="foot-count" id="topicsCount" aria-live="polite"></p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script>Pages.topics();</script>{% endblock %}
