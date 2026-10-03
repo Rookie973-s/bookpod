@@ -1,34 +1,71 @@
-{% extends "base.html" %}
-{% block title %}{{ book.title }} — BookPod{% endblock %}
-{% block description %}{{ book.description|truncatechars:160 }}{% endblock %}
-{% block nav_key %}{% endblock %}
-{% block content %}
-<div class="wrap page-pad" style="padding-bottom:20px">
-  <a href="javascript:history.back()" class="backlink">← Back</a>
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ seo.title|default:"BookPod — Online Library of Books, Guides &amp; Study Materials" }}</title>
+{% if seo %}
+<meta name="description" content="{{ seo.description }}">
+<link rel="canonical" href="{{ seo.canonical }}">
+<meta name="robots" content="{{ seo.robots|default:'index, follow, max-image-preview:large' }}">
+{% if seo.google_verification %}<meta name="google-site-verification" content="{{ seo.google_verification }}">{% endif %}
+{% if seo.bing_verification %}<meta name="msvalidate.01" content="{{ seo.bing_verification }}">{% endif %}
 
-  <div class="detail-hero">
-    <div class="ob-panel">
-      <div class="ob-wrap" id="obWrap"><div class="skeleton" style="height:100%"></div></div>
-      <p class="ob-caption meta-row-inline" id="obCaption"></p>
-    </div>
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn, Telegram, Slack...) -->
+<meta property="og:site_name" content="{{ seo.site_name }}">
+<meta property="og:type" content="{{ seo.og_type }}">
+<meta property="og:title" content="{{ seo.title }}">
+<meta property="og:description" content="{{ seo.description }}">
+<meta property="og:url" content="{{ seo.canonical }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="{{ seo.image }}">
+<meta property="og:image:alt" content="{{ seo.image_alt }}">
+{% if seo.has_default_image %}<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">{% endif %}
+{% for prop, value in seo.extra %}<meta property="{{ prop }}" content="{{ value }}">
+{% endfor %}
+<!-- Twitter / X -->
+<meta name="twitter:card" content="{{ seo.twitter_card }}">
+<meta name="twitter:title" content="{{ seo.title }}">
+<meta name="twitter:description" content="{{ seo.description }}">
+<meta name="twitter:image" content="{{ seo.image }}">
+<meta name="twitter:image:alt" content="{{ seo.image_alt }}">
+{% if seo.jsonld %}<script type="application/ld+json">{{ seo.jsonld }}</script>{% endif %}
+{% else %}
+<meta name="description" content="A personal digital publishing house and educational library.">
+{% endif %}
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#FAF6EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1224" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="{% static 'images/favicon.ico' %}" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="{% static 'images/favicon-192.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Apply the saved theme before first paint (UI preference only, not authentication). -->
+<script>(function(){var t=null;try{t=localStorage.getItem('bp-theme')}catch(e){}
+if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';
+document.documentElement.setAttribute('data-theme',t)})();</script>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% block head %}{% endblock %}
+</head>
+<body class="mobile-pad" data-nav="{% block nav_key %}{% endblock %}">
 
-    <div class="detail-info">
-      <p id="bCat" class="detail-cat">{{ book.category.name }} · {{ book.book_type }} · {{ book.level }}</p>
-      <h1 id="bTitle" class="serif detail-title">{{ book.title }}</h1>
-      <p id="bAuthor" class="detail-author">by {{ book.author }}</p>
-      <div id="bMeta" class="meta-row"></div>
-      <p id="bDesc" class="detail-desc">{{ book.description }}</p>
-      <div class="actions" id="bActions" style="margin-bottom:22px"></div>
-      <div id="bProgress"></div>
-      <h3 class="serif detail-h3">Table of contents</h3>
-      <ul id="bToc" class="toc">{% for chapter in book.chapters %}<li><span class="n">{{ forloop.counter }}</span>{{ chapter }}</li>{% endfor %}</ul>
-    </div>
-  </div>
+{% include "partials/header.html" %}
 
-  <section class="related" aria-labelledby="relH">
-    <h3 class="serif detail-h3" id="relH">Related publications</h3>
-    <div id="bRelated" class="rel-grid"></div>
-  </section>
-</div>
-{% endblock %}
-{% block scripts %}{{ book.slug|json_script:"book-slug" }}<script>Pages.book(JSON.parse(document.getElementById('book-slug').textContent));</script>{% endblock %}
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+{% include "partials/footer.html" %}
+{% include "partials/bottom_nav.html" %}
+{% include "partials/dialogs.html" %}
+
+<script src="{% static 'js/core.js' %}"></script>
+<script src="{% static 'js/pages.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
