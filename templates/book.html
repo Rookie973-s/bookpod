@@ -13,7 +13,7 @@
     </div>
 
     <div class="detail-info">
-      <p id="bCat" class="detail-cat"></p>
+      <p id="bCat" class="detail-cat">{{ book.category.name }} · {{ book.book_type }} · {{ book.level }}</p>
       <h1 id="bTitle" class="serif detail-title">{{ book.title }}</h1>
       <p id="bAuthor" class="detail-author">by {{ book.author }}</p>
       <div id="bMeta" class="meta-row"></div>
@@ -21,7 +21,7 @@
       <div class="actions" id="bActions" style="margin-bottom:22px"></div>
       <div id="bProgress"></div>
       <h3 class="serif detail-h3">Table of contents</h3>
-      <ul id="bToc" class="toc"></ul>
+      <ul id="bToc" class="toc">{% for chapter in book.chapters %}<li><span class="n">{{ forloop.counter }}</span>{{ chapter }}</li>{% endfor %}</ul>
     </div>
   </div>
 
