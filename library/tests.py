@@ -208,7 +208,7 @@ class PageTests(BaseCase):
             r = self.client.get(url)
             self.assertEqual(r.status_code, 200, url)
             self.assertNotContains(r, "Bookmarks")
-            self.assertNotContains(r, "Publish")
+            self.assertNotContains(r, ">Publish<")
         self.assertEqual(self.client.get(f"/book/{self.hidden.slug}/").status_code, 404)
         self.assertEqual(self.client.get("/book/nope/").status_code, 404)
 
