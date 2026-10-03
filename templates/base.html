@@ -1,36 +1,34 @@
-{% load static %}<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{% block title %}BookPod — A Library for Ideas Worth Keeping{% endblock %}</title>
-<meta name="description" content="{% block description %}A personal digital publishing house and educational library.{% endblock %}">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#FAF6EE" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0A1224" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="{% static 'images/logo.png' %}" type="image/png">
-<!-- Apply the saved theme before first paint (UI preference only, not authentication). -->
-<script>(function(){var t=null;try{t=localStorage.getItem('bp-theme')}catch(e){}
-if(!t)t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';
-document.documentElement.setAttribute('data-theme',t)})();</script>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% block head %}{% endblock %}
-</head>
-<body class="mobile-pad" data-nav="{% block nav_key %}{% endblock %}">
+{% extends "base.html" %}
+{% block title %}{{ book.title }} — BookPod{% endblock %}
+{% block description %}{{ book.description|truncatechars:160 }}{% endblock %}
+{% block nav_key %}{% endblock %}
+{% block content %}
+<div class="wrap page-pad" style="padding-bottom:20px">
+  <a href="javascript:history.back()" class="backlink">← Back</a>
 
-{% include "partials/header.html" %}
+  <div class="detail-hero">
+    <div class="ob-panel">
+      <div class="ob-wrap" id="obWrap"><div class="skeleton" style="height:100%"></div></div>
+      <p class="ob-caption meta-row-inline" id="obCaption"></p>
+    </div>
 
-<main id="main">
-{% block content %}{% endblock %}
-</main>
+    <div class="detail-info">
+      <p id="bCat" class="detail-cat">{{ book.category.name }} · {{ book.book_type }} · {{ book.level }}</p>
+      <h1 id="bTitle" class="serif detail-title">{{ book.title }}</h1>
+      <p id="bAuthor" class="detail-author">by {{ book.author }}</p>
+      <div id="bMeta" class="meta-row"></div>
+      <p id="bDesc" class="detail-desc">{{ book.description }}</p>
+      <div class="actions" id="bActions" style="margin-bottom:22px"></div>
+      <div id="bProgress"></div>
+      <h3 class="serif detail-h3">Table of contents</h3>
+      <ul id="bToc" class="toc">{% for chapter in book.chapters %}<li><span class="n">{{ forloop.counter }}</span>{{ chapter }}</li>{% endfor %}</ul>
+    </div>
+  </div>
 
-{% include "partials/footer.html" %}
-{% include "partials/bottom_nav.html" %}
-{% include "partials/dialogs.html" %}
-
-<script src="{% static 'js/core.js' %}"></script>
-<script src="{% static 'js/pages.js' %}"></script>
-{% block scripts %}{% endblock %}
-</body>
-</html>
+  <section class="related" aria-labelledby="relH">
+    <h3 class="serif detail-h3" id="relH">Related publications</h3>
+    <div id="bRelated" class="rel-grid"></div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}{{ book.slug|json_script:"book-slug" }}<script>Pages.book(JSON.parse(document.getElementById('book-slug').textContent));</script>{% endblock %}
