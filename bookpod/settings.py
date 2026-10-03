@@ -60,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "library.middleware.SeoHeadersMiddleware",
 ]
 
 ROOT_URLCONF = "bookpod.urls"
@@ -156,20 +157,41 @@ STORAGES = {
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+def _bare_domain(value):
+    """'https://x.supabase.co/path/' -> 'x.supabase.co/path'  (the setting must have no scheme)."""
+    value = value.strip()
+    for prefix in ("https://", "http://"):
+        if value.lower().startswith(prefix):
+            value = value[len(prefix):]
+    return value.rstrip("/")
+
+
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "").strip()
 USE_BUCKET_STORAGE = bool(AWS_STORAGE_BUCKET_NAME)
 if USE_BUCKET_STORAGE:
-    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
-    AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL", "").strip() or None
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "").strip()
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "").strip()
+    AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL", "").strip().rstrip("/") or None
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME", "").strip() or None
-    # Public address files are served from, WITHOUT https://  (see DEPLOY.md for your provider).
-    AWS_S3_CUSTOM_DOMAIN = os.environ.get("AWS_S3_CUSTOM_DOMAIN", "").strip() or None
+    # Public address files are served from (any "https://" you paste is removed automatically).
+    AWS_S3_CUSTOM_DOMAIN = _bare_domain(os.environ.get("AWS_S3_CUSTOM_DOMAIN", "")) or None
     AWS_S3_ADDRESSING_STYLE = "path"
     AWS_S3_SIGNATURE_VERSION = "s3v4"
     AWS_QUERYSTRING_AUTH = False
     AWS_DEFAULT_ACL = None
     AWS_S3_FILE_OVERWRITE = False
+    try:
+        # Newer boto3 adds checksum headers that some S3-compatible services reject.
+        from botocore.config import Config as _BotoConfig
+
+        AWS_S3_CLIENT_CONFIG = _BotoConfig(
+            signature_version="s3v4",
+            s3={"addressing_style": "path"},
+            request_checksum_calculation="when_required",
+            response_checksum_validation="when_required",
+        )
+    except (ImportError, TypeError):  # old botocore: fall back to its defaults
+        pass
     STORAGES["default"] = {"BACKEND": "storages.backends.s3.S3Storage"}
 
 # --- Django REST Framework -------------------------------------------------------------
@@ -184,6 +206,13 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "library.pagination.StandardPagination",
     "PAGE_SIZE": 24,
 }
+
+# --- SEO ---------------------------------------------------------------------------------------
+# Public address used in canonical links, the sitemap and social previews, e.g. https://bookpod.onrender.com
+SITE_URL = os.environ.get("SITE_URL", "").strip().rstrip("/")
+# Optional: the verification codes Google Search Console / Bing Webmaster give you (see DEPLOY-SEO.md)
+GOOGLE_SITE_VERIFICATION = os.environ.get("GOOGLE_SITE_VERIFICATION", "").strip()
+BING_SITE_VERIFICATION = os.environ.get("BING_SITE_VERIFICATION", "").strip()
 
 # --- Google Sign-In -----------------------------------------------------------------------
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "").strip()
